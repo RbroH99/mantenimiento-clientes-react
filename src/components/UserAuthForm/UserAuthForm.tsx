@@ -9,11 +9,13 @@ import {
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
 import { useLoginFormContext } from "../../context/LoginFormContext";
+import { useNavigate } from "react-router-dom";
 
 const UserAuthForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { loading, formData, handleChange, handleSubmit } =
     useLoginFormContext();
+  const navigate = useNavigate();
 
   return (
     <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
@@ -75,9 +77,15 @@ const UserAuthForm = () => {
         INICIAR SESIÓN
       </Button>
 
-      <div className="text-center mt-4">
-        <span className="text-gray-600">¿No tiene una cuenta? </span>
-        <a href="/register" className="text-blue-400 hover:text-blue-600">
+      <div className="mt-4">
+        <a
+          onClick={(e) => {
+            e.preventDefault();
+            navigate("/register");
+          }}
+          className="flex flex-col text-blue-400 hover:text-blue-600 hover:cursor-pointer"
+        >
+          <span>¿No tiene una cuenta? </span>
           Regístrese
         </a>
       </div>
