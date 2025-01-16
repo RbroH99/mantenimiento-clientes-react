@@ -7,7 +7,8 @@ import {
 } from "react";
 import { UserAuthFormData } from "../types";
 import { AuthContextType, useAuthContext } from "./AuthContext";
-import { Alert, Snackbar } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useSiteNotificationContext } from "./SiteNotificationContext";
 
 export interface LoginFormContextType
   extends Omit<AuthContextType, "register" | "logout" | "login"> {
@@ -37,8 +38,8 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
     remember: false,
   });
   const { error, loading, login, token, user } = useAuthContext();
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [loginMessage, setLoginMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const { showNotification } = useSiteNotificationContext();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, checked } = event.target;
@@ -54,24 +55,19 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
       if (user) {
         if (formData.remember)
           localStorage.setItem("user", JSON.stringify(user));
-        setLoginMessage("Sesión iniciada correctamente.");
-      } else {
-        setLoginMessage(error);
+        showNotification("Sesión iniciada correctamente.", "success");
+      } else if (localStorage.getItem("token")) {
+        showNotification("Sesión iniciada correctamente.", "success");
+        navigate("/");
+      } else if (error) {
+        showNotification(error, "error");
       }
     });
   };
 
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
-
   useEffect(() => {
-    if (error) setLoginMessage(error);
+    if (error) showNotification(error, "error");
   }, [error]);
-
-  useEffect(() => {
-    if (loginMessage) setSnackbarOpen(true);
-  }, [loginMessage]);
 
   return (
     <LoginFormContext.Provider
@@ -86,20 +82,6 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
       }}
     >
       {children}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
-      >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity={user ? "success" : "error"}
-          sx={{ width: "100%" }}
-        >
-          {loginMessage || "Oops ...Error autenticándose!"}
-        </Alert>
-      </Snackbar>
     </LoginFormContext.Provider>
   );
 };

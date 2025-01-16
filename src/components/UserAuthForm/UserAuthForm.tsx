@@ -12,7 +12,8 @@ import { useLoginFormContext } from "../../context/LoginFormContext";
 
 const UserAuthForm = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const { formData, handleChange, handleSubmit } = useLoginFormContext();
+  const { loading, formData, handleChange, handleSubmit } =
+    useLoginFormContext();
 
   return (
     <form className="mt-8 space-y-4" onSubmit={handleSubmit}>
@@ -65,6 +66,7 @@ const UserAuthForm = () => {
       />
 
       <Button
+        loading={loading}
         type="submit"
         fullWidth
         variant="contained"
