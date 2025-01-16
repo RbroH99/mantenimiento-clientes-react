@@ -13,3 +13,9 @@ export interface UserInfoType {
   userId: string;
   username: string;
 }
+
+export interface UserAuthFormData {
+  username: string;
+  password: string;
+  remember: boolean;
+}
