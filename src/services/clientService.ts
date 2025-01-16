@@ -22,8 +22,8 @@ const handleAuthError = (
 
 export const login = async (
   data: UserAuthDataType,
-  onError?: (err: any) => void,
-  throwError: boolean = false
+  throwError: boolean = false,
+  onError?: (err: any) => void
 ): Promise<UserInfoType | void> => {
   try {
     const res = await apiClient.post("api/Authenticate/login", data);
