@@ -4,11 +4,7 @@ import Sidebar from "../components/Sidebar/Sidebar";
 import { useAuthContext } from "../context/AuthContext";
 import { Outlet } from "react-router-dom";
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+const RootLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useAuthContext();
 
@@ -28,4 +24,6 @@ export default function DashboardLayout({
       </main>
     </div>
   );
-}
+};
+
+export default RootLayout;

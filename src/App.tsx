@@ -8,6 +8,8 @@ import "./index.css";
 import Login from "./pages/Login/Login";
 import Register from "./pages/Register/Register";
 import { SiteNotificationProvider } from "./context/SiteNotificationContext";
+import NotFound from "./pages/NotFound";
+import RootLayout from "./layouts/RootLayout";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -15,7 +17,9 @@ const router = createBrowserRouter(
       <Route path="login" element={<Login />} />
       <Route path="register" element={<Register />} />
       {/* <Route path="" element={<Home />} /> */}
-      {/* <Route path="*" element={<NotFoundPage />} /> */}
+      <Route path="" element={<RootLayout />}>
+        <Route path="*" element={<NotFound />} />
+      </Route>
     </Route>
   )
 );
