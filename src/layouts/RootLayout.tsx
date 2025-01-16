@@ -1,6 +1,8 @@
 import { useState } from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Sidebar from "../components/Sidebar/Sidebar";
+import { useAuthContext } from "../context/AuthContext";
+import { Outlet } from "react-router-dom";
 
 export default function DashboardLayout({
   children,
@@ -8,18 +10,21 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const username = "Nombre de Usuario"; // This should come from your auth system
+  const { user } = useAuthContext();
 
   return (
     <div className="min-h-screen">
-      <Navbar onMenuClick={() => setSidebarOpen(true)} username={username} />
+      <Navbar
+        onMenuClick={() => setSidebarOpen(true)}
+        username={user?.username ?? "Usuario"}
+      />
       <Sidebar
         open={sidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        username={username}
+        username={user?.username ?? "Usuario"}
       />
       <main className="lg:ml-64 pt-16 min-h-screen bg-gray-50 relative z-0">
-        <div className="p-6">{children}</div>
+        <Outlet />
       </main>
     </div>
   );
