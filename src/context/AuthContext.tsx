@@ -10,6 +10,7 @@ import {
   register as registerService,
 } from "../services/clientService";
 import { UserInfoType, UserRegisterDataType } from "../types";
+import { AxiosError } from "axios";
 
 export interface AuthContextType {
   user: UserInfoType | null;
@@ -17,7 +18,10 @@ export interface AuthContextType {
   loading: boolean;
   error: string | null;
   login: (username: string, password: string) => Promise<void>;
-  register: (data: UserRegisterDataType) => Promise<string | void>;
+  register: (
+    data: UserRegisterDataType,
+    onError?: (err: AxiosError) => void
+  ) => Promise<string | void>;
   logout: () => void;
 }
 
@@ -57,13 +61,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const register = async (data: UserRegisterDataType) => {
+  const register = async (
+    data: UserRegisterDataType,
+    onError?: (err: AxiosError) => void
+  ) => {
     try {
       setLoading(true);
-      await registerService(data);
+      await registerService(data, true);
       return "Usuario creado correctamente. Por favor, inicia sesión.";
     } catch (err) {
-      setError("Error al registrarse. Por favor, inténtelo de nuevo.");
+      if (err instanceof AxiosError) {
+        setError(err.response?.data.message || "Error creando usuario");
+        if (onError) onError(err);
+      } else setError("Error al registrarse. Por favor, inténtelo de nuevo.");
     } finally {
       setLoading(false);
     }

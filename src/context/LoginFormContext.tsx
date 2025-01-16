@@ -50,7 +50,6 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    console.log("Form submitted:", formData);
     await login(formData.username, formData.password).then(() => {
       if (user) {
         if (formData.remember)

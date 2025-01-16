@@ -4,7 +4,7 @@ export interface UserAuthDataType {
 }
 
 export interface UserRegisterDataType extends UserAuthDataType {
-  username: string;
+  email: string;
 }
 
 export interface UserInfoType {

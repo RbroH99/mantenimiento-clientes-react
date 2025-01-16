@@ -50,18 +50,19 @@ export const login = async (
 
 export const register = async (
   data: UserRegisterDataType,
-  onError?: (err: any) => void,
-  throwError: boolean = false
+  throwError: boolean = false,
+  onError?: (err: any) => void
 ) => {
   try {
     const res = await apiClient.post("api/Authenticate/register", data);
 
     if (res.status !== 200) {
       throw new AxiosError(
-        `Inicio de sesión fallado. Código de estado: ${res.status}`,
+        `Error creando usuario. Código de estado: ${res.status}`,
         undefined,
         res.request,
-        res.config
+        res.config,
+        res.request || {}
       );
     }
   } catch (err) {
