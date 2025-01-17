@@ -70,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         variant="permanent"
         className="hidden lg:block"
         PaperProps={{
-          className: "w-80 mt-16",
+          className: "w-80 mt-16 !bg-gray-100",
         }}
       >
         {content}
@@ -81,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         open={open}
         onClose={onClose}
         PaperProps={{
-          className: "w-80 mt-16",
+          className: "w-80 mt-16 !bg-gray-100",
         }}
       >
         {content}
