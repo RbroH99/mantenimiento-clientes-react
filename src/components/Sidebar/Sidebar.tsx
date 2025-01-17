@@ -52,7 +52,6 @@ const Sidebar: React.FC<SidebarProps> = ({
               onClick={(e) => {
                 navigate(item.path);
               }}
-              href={item.path}
               className={`mb-2 rounded-lg`}
             >
               <div className="w-10 h-10 flex items-center justify-center mr-2">
@@ -71,7 +70,6 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <Drawer
-        slotProps={{ backdrop: {} }}
         variant={isLgUp ? "permanent" : "temporary"}
         open={isLgUp ? true : open}
         onClose={onClose}

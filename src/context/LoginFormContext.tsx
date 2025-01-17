@@ -51,18 +51,16 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-    await login(formData.username, formData.password).then(() => {
-      if (user) {
-        if (formData.remember)
-          localStorage.setItem("user", JSON.stringify(user));
-        showNotification("Sesión iniciada correctamente.", "success");
-      } else if (localStorage.getItem("token")) {
-        showNotification("Sesión iniciada correctamente.", "success");
-        navigate("/");
-      } else if (error) {
-        showNotification(error, "error");
+    await login(formData.username, formData.password, formData.remember).then(
+      () => {
+        if (localStorage.getItem("token")) {
+          showNotification("Sesión iniciada correctamente.", "success");
+          navigate("/");
+        } else if (error) {
+          showNotification(error, "error");
+        }
       }
-    });
+    );
   };
 
   useEffect(() => {

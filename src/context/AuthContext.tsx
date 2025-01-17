@@ -17,7 +17,11 @@ export interface AuthContextType {
   token: string | null;
   loading: boolean;
   error: string | null;
-  login: (username: string, password: string) => Promise<void>;
+  login: (
+    username: string,
+    password: string,
+    remember: boolean
+  ) => Promise<void>;
   register: (
     data: UserRegisterDataType,
     onError?: (err: AxiosError) => void
@@ -43,7 +47,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (username: string, password: string) => {
+  const login = async (
+    username: string,
+    password: string,
+    remember: boolean = false
+  ) => {
     try {
       setLoading(true);
       const userInfo = await loginService({ username, password }, true);
@@ -51,6 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setToken(userInfo.token);
         setUser(userInfo);
         localStorage.setItem("token", userInfo.token);
+        if (remember) localStorage.setItem("username", userInfo.username);
       }
     } catch (err) {
       setError(
@@ -83,17 +92,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
   };
 
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
-    const storedUser = localStorage.getItem("user");
-
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
-    }
+    if (storedToken) localStorage.removeItem("token");
   }, []);
 
   return (

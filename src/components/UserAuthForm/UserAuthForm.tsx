@@ -22,6 +22,7 @@ const UserAuthForm = () => {
       <TextField
         fullWidth
         required
+        placeholder={localStorage.getItem("username") ?? undefined}
         label="Usuario"
         name="username"
         value={formData.username}

@@ -75,6 +75,11 @@ export const register = async (
   }
 };
 
+export function checkUserAuthenticated(): boolean {
+  const token = localStorage.getItem("token");
+  return !!token;
+}
+
 export const getClients = async (
   userId: string,
   nombre?: string,
