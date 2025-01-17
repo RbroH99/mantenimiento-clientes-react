@@ -76,7 +76,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         open={isLgUp ? true : open}
         onClose={onClose}
         PaperProps={{
-          className: "w-80 mt-16 !bg-gray-100 !shadow-lg",
+          className: "w-80 mt-16 !bg-gray-200 !shadow-lg",
         }}
       >
         {content}

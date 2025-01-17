@@ -75,8 +75,17 @@ export const register = async (
   }
 };
 
-export const getClients = async (): Promise<ClientListDataType[]> => {
-  const res = await apiClient.post("api/Cliente/Listado");
+export const getClients = async (
+  userId: string,
+  nombre?: string,
+  identificacion?: string
+): Promise<ClientListDataType[]> => {
+  const data: { userId: string; nombre?: string; identificacion?: string } = {
+    userId: userId,
+    nombre: nombre ?? undefined,
+    identificacion: identificacion ?? undefined,
+  };
+  const res = await apiClient.post("api/Cliente/Listado", data);
   return res.data;
 };
 

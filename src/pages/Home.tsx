@@ -4,7 +4,7 @@ const Home = () => {
   const theme = useTheme();
   const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
   return (
-    <div className="min-h-screen flex mt-56 justify-center bg-gray-50">
+    <div className="min-h-screen flex mt-56 justify-center">
       <Box className="text-center space-y-4">
         <div className="flex items-center justify-center gap-2">
           <Typography

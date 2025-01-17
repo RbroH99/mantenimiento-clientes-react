@@ -9,7 +9,7 @@ const RootLayout = () => {
   const { user } = useAuthContext();
 
   return (
-    <div className="min-h-screen bg-gray-50 ">
+    <div className="min-h-screen bg-gray-100 ">
       <Navbar
         onMenuClick={() => {
           setSidebarOpen(!sidebarOpen);
@@ -21,7 +21,7 @@ const RootLayout = () => {
         onClose={() => setSidebarOpen(false)}
         username={user?.username ?? "Usuario"}
       />
-      <main className="lg:ml-64 pt-16 min-h-screen relative z-0">
+      <main className="lg:ml-80 bg-gray-100 mt-6 pt-16 min-h-screen relative z-0">
         <Outlet />
       </main>
     </div>
