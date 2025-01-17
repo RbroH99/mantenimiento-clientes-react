@@ -16,9 +16,14 @@ export default function Navbar({ onMenuClick, username }: NavbarProps) {
   }, []);
 
   return (
-    <AppBar position="fixed" className="bg-[#071727] z-[1200]">
+    <AppBar position="fixed" className="!bg-[#071727] z-[1200]">
       <Toolbar className="bg-[#071727] border-b-4 border-b-sky-500">
-        <IconButton edge="start" onClick={onMenuClick} className=" !text-white">
+        <IconButton
+          edge="start"
+          onClick={onMenuClick}
+          className=" !text-white"
+          aria-label="open drawer"
+        >
           <MenuIcon className="" />
         </IconButton>
         <Typography variant="h6" component="div" className="flex-grow">

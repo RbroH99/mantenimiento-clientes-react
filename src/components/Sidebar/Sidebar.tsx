@@ -7,6 +7,8 @@ import {
   Box,
   ListItemButton,
   Divider,
+  useTheme,
+  useMediaQuery,
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -23,6 +25,8 @@ const Sidebar: React.FC<SidebarProps> = ({
   username,
 }: SidebarProps) => {
   const navigate = useNavigate();
+  const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
 
   const menuItems = [
     { text: "INICIO", abbreviation: "IN", path: "/" },
@@ -67,21 +71,12 @@ const Sidebar: React.FC<SidebarProps> = ({
   return (
     <>
       <Drawer
-        variant="permanent"
-        className="hidden lg:block"
-        PaperProps={{
-          className: "w-80 mt-16 !bg-gray-100",
-        }}
-      >
-        {content}
-      </Drawer>
-
-      <Drawer
-        variant="temporary"
-        open={open}
+        slotProps={{ backdrop: {} }}
+        variant={isLgUp ? "permanent" : "temporary"}
+        open={isLgUp ? true : open}
         onClose={onClose}
         PaperProps={{
-          className: "w-80 mt-16 !bg-gray-100",
+          className: "w-80 mt-16 !bg-gray-100 !shadow-lg",
         }}
       >
         {content}

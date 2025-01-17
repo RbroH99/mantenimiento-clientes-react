@@ -1,6 +1,8 @@
-import { Typography, Box } from "@mui/material";
+import { Typography, Box, useTheme, useMediaQuery } from "@mui/material";
 
 const Home = () => {
+  const theme = useTheme();
+  const isLgUp = useMediaQuery(theme.breakpoints.up("lg"));
   return (
     <div className="min-h-screen flex mt-56 justify-center bg-gray-50">
       <Box className="text-center space-y-4">
@@ -8,7 +10,7 @@ const Home = () => {
           <Typography
             variant="h1"
             component="span"
-            className="text-6xl !font-extrabold "
+            className={`${isLgUp ? "text-6xl" : "text-3xl"} !font-extrabold`}
           >
             Bienvenido
           </Typography>
