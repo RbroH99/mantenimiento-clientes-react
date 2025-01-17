@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({
   const content = (
     <div className="h-full flex flex-col">
       <div className="p-4 flex flex-col items-center space-y-2">
-        <AccountCircle className="!w-24 !h-24" />
+        <AccountCircle className="!w-28 !h-28" />
         <Typography variant="subtitle1">{username}</Typography>
       </div>
       <Divider />

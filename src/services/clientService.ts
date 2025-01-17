@@ -1,8 +1,9 @@
-import { AxiosError } from "axios";
+import { AxiosError, AxiosResponse } from "axios";
 import apiClient from "./api";
 import {
   ClientCreateDataType,
   ClientDetailDataType,
+  ClientInteresses,
   ClientListDataType,
   UserAuthDataType,
   UserInfoType,
@@ -96,11 +97,26 @@ export const getClientDetails = async (
   return res.data;
 };
 
-export const createClient = async (data: ClientCreateDataType) => {
-  await apiClient.post("api/Cliente/Crear", data);
+export const createClient = async (
+  data: ClientCreateDataType,
+  throwError: boolean = false
+) => {
+  await apiClient.post("api/Cliente/Crear", data).catch((err) => {
+    if (throwError) throw err;
+  });
 };
+
 export const updateClient = async (data: ClientDetailDataType) =>
   await apiClient.post("api/Cliente/Actualizar", data);
 
 export const deleteClient = async (id: string) =>
   await apiClient.delete(`api/Cliente/Eliminar/${id}`);
+
+export const getInteresses = async (
+  throwError: boolean = false
+): Promise<ClientInteresses[]> => {
+  const res = await apiClient.get("api/Intereses/Listado").catch((err) => {
+    if (throwError) throw err;
+  });
+  return (res as AxiosResponse)?.data || [];
+};

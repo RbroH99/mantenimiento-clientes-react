@@ -24,3 +24,8 @@ export interface ClientListDataType {
   nombre: string;
   apellidos: string;
 }
+
+export interface ClientInteresses {
+  id: string;
+  description: string;
+}

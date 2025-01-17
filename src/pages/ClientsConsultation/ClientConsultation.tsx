@@ -16,11 +16,14 @@ import ClientFilterForm from "../../components/ClientFilterForm/ClientFilterForm
 import { useAuthContext } from "../../context/AuthContext";
 import { useSiteNotificationContext } from "../../context/SiteNotificationContext";
 import { getClients } from "../../services/clientService";
+import { useNavigate } from "react-router-dom";
 
 const ClientsConsultation: React.FC = () => {
   const [clients, setClients] = useState<ClientListDataType[]>([]);
   const { user } = useAuthContext();
+
   const { showNotification } = useSiteNotificationContext();
+  const navigate = useNavigate();
 
   const fetchClients = async (name?: string, identification?: string) => {
     try {
@@ -39,21 +42,33 @@ const ClientsConsultation: React.FC = () => {
   };
 
   useEffect(() => {
-    // fetchClients();
+    fetchClients();
   }, []);
 
   return (
-    <Box className="p-6 max-w-[1200px] bg-white shadow-md !border-1 !border-gray-500 rounded-md min-h-[screen-10] mx-6">
+    <Box className="p-6 max-w-[1200px] mt-4 bg-white shadow-md !border-1 !border-gray-500 rounded-md min-h-[screen-10] mx-6">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-[24px] text-[#2C3E50] font-bold">
           Consulta de clientes
         </h1>
         <div className="flex gap-3">
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/client-maintenance");
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 font-bold rounded hover:bg-gray-200"
+          >
             <Add className="text-gray-600" />
             <span>Agregar</span>
           </button>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 rounded hover:bg-gray-200">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              navigate("/");
+            }}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-600 font-bold rounded hover:bg-gray-200"
+          >
             <ArrowBack className="text-gray-600" />
             <span>Regresar</span>
           </button>
