@@ -37,6 +37,15 @@ const ClientsConsultation: React.FC = () => {
     }
   };
 
+  const handleEditClick = (id: string) => {
+    navigate(`/client-maintenance/${id}`);
+  };
+
+  // const handleDeleteClick = (id) => {
+  //   // Lógica para eliminar el cliente
+  //   console.log(`Eliminar cliente con id: ${id}`);
+  // };
+
   const handleSearch = async (name: string, identification: string) => {
     fetchClients(name, identification);
   };
@@ -112,10 +121,14 @@ const ClientsConsultation: React.FC = () => {
                   {`${client.nombre} ${client.apellidos}`}
                 </TableCell>
                 <TableCell
+                  key={client.id}
                   align="right"
                   className="border-b w-1/12 border-gray-200"
                 >
-                  <IconButton size="small">
+                  <IconButton
+                    onClick={() => handleEditClick(client.id)}
+                    size="small"
+                  >
                     <Edit fontSize="small" className="text-gray-400" />
                   </IconButton>
                   <IconButton size="small">

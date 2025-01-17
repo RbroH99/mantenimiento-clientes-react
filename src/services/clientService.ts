@@ -92,7 +92,7 @@ export const getClients = async (
 
 export const getClientDetails = async (
   id: string
-): Promise<ClientDetailDataType> => {
+): Promise<ClientCreateDataType> => {
   const res = await apiClient.get(`api/Cliente/Obtener/${id}`);
   return res.data;
 };

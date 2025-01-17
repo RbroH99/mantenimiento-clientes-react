@@ -3,19 +3,22 @@ export interface ClientCreateDataType {
   apellidos: string;
   identificacion: string;
   celular: string;
+  telefonoCelular: string;
   otroTelefono: string;
   direccion: string;
   fNacimiento: string;
   fAfiliacion: string;
   sexo: string;
   resennaPersonal: string;
+  resenaPersonal: string;
   imagen: string;
   interesFK: string;
+  interesesId: string;
   usuarioId: string;
 }
 
 export interface ClientDetailDataType extends ClientCreateDataType {
-  id: string;
+  id?: string;
 }
 
 export interface ClientListDataType {
@@ -27,5 +30,5 @@ export interface ClientListDataType {
 
 export interface ClientInteresses {
   id: string;
-  description: string;
+  descripcion: string;
 }

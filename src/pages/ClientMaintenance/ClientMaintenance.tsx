@@ -6,20 +6,29 @@ import {
   FormControl,
   InputLabel,
   Box,
-  Button,
 } from "@mui/material";
 import { Save, ArrowBack, Person } from "@mui/icons-material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-import { ClientCreateDataType, ClientInteresses } from "../../types";
-import { useNavigate } from "react-router-dom";
+import {
+  ClientCreateDataType,
+  ClientDetailDataType,
+  ClientInteresses,
+} from "../../types";
+import { useNavigate, useParams } from "react-router-dom";
 import useClientMaintenanceValidation from "./useClientMaintenanceValidation";
 import useClientMaintenanceChangeHandlers from "./useClientMaintenanceChangeHandlers";
 import { useAuthContext } from "../../context/AuthContext";
-import { createClient, getInteresses } from "../../services/clientService";
+import {
+  createClient,
+  getClientDetails,
+  getInteresses,
+  updateClient,
+} from "../../services/clientService";
 import { useSiteNotificationContext } from "../../context/SiteNotificationContext";
+import { processFormData } from "./utils";
 
 const ClientMaintenance: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,13 +38,16 @@ const ClientMaintenance: React.FC = () => {
     nombre: "",
     apellidos: "",
     sexo: "F",
-    fNacimiento: dayjs().format("DD/MM/YYYY"),
-    fAfiliacion: dayjs().format("DD/MM/YYYY"),
+    fNacimiento: dayjs().toString(),
+    fAfiliacion: dayjs().toString(),
     celular: "",
+    telefonoCelular: "",
     otroTelefono: "",
     interesFK: "",
+    interesesId: "",
     direccion: "",
     resennaPersonal: "",
+    resenaPersonal: "",
     imagen: "",
     usuarioId: "",
   });
@@ -48,30 +60,40 @@ const ClientMaintenance: React.FC = () => {
     handleSelectChange,
   } = useClientMaintenanceChangeHandlers({ formData, setFormData });
   const { user } = useAuthContext();
-  //   const [userId, setUserId] = useState<string>();
+  const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const { showNotification } = useSiteNotificationContext();
   const navigate = useNavigate();
+  const params = useParams();
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
+    let processedData: ClientDetailDataType = formData;
     if (validateForm()) {
-      let processedData = {};
       if (user) {
         console.log("User:", user);
-        processedData = {
-          ...formData,
-          fNacimiento: dayjs(formData.fNacimiento).format("YYYY-MM-DD"),
-          fAfiliacion: dayjs(formData.fAfiliacion).format("YYYY-MM-DD"),
-          usuarioId: user.userid,
-        };
+        processedData = processFormData(
+          formData,
+          user.userid,
+          params.id
+        ) as ClientDetailDataType;
       }
       try {
         setLoading(true);
-        console.log("Formulario válido:", formData);
-        await createClient(processedData as ClientCreateDataType, true);
-        navigate("/clients");
-        showNotification("Cliente creado exitosamente.", "success");
+        if (processedData) {
+          // Si esta en modo edición hace el post al endpoint de actualizar
+          isEditMode
+            ? await updateClient({
+                ...(processedData as ClientCreateDataType),
+                id: params.id as string,
+              })
+            : // De no estar en modo edición pues hace el post a create.
+              await createClient(processedData as ClientCreateDataType, true);
+          navigate("/clients");
+          showNotification(
+            `Cliente ${isEditMode ? "editado" : "creado"} exitosamente.`,
+            "success"
+          );
+        }
       } catch (err) {
         showNotification(
           "Ocurrió un error tratando de crear el nuevo cliente.",
@@ -82,7 +104,6 @@ const ClientMaintenance: React.FC = () => {
         setLoading(false);
       }
     } else {
-      console.log("Formulario inválido");
     }
   };
 
@@ -98,9 +119,19 @@ const ClientMaintenance: React.FC = () => {
     }
   }, []);
 
-  //   useEffect(() => {
-  //     if (user) setUserId(user.userid);
-  //   }, [user]);
+  useEffect(() => {
+    if (params.id) {
+      setIsEditMode(true);
+      getClientDetails(params.id)
+        .then((res) => {
+          if (res) setFormData(res);
+        })
+        .catch((err) => {
+          showNotification("Error obteniendo los datos del cliente", "error");
+          console.error("Error getting client data", err);
+        });
+    }
+  }, []);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={"es"}>
@@ -132,15 +163,22 @@ const ClientMaintenance: React.FC = () => {
                 </h1>
               </div>
               <div className="flex gap-3">
-                <Button
-                  loading={loading}
-                  variant="contained"
+                <button
+                  onClick={(e) => {
+                    if (loading) e.preventDefault();
+                  }}
                   type="submit"
                   className="flex items-center gap-2 px-4 py-2 !shadow-none !bg-gray-100 !text-gray-500 !font-bold !rounded hover:!bg-gray-200"
                 >
-                  <Save className="text-gray-600" />
-                  <span>Guardar</span>
-                </Button>
+                  {loading ? (
+                    "Enviando"
+                  ) : (
+                    <>
+                      <Save className="text-gray-600" />
+                      <span>Guardar</span>
+                    </>
+                  )}
+                </button>
                 <button
                   onClick={(e) => {
                     e.preventDefault();
@@ -205,7 +243,7 @@ const ClientMaintenance: React.FC = () => {
                 <DatePicker
                   name="fNacimiento"
                   label="Fecha de nacimiento *"
-                  value={dayjs(formData.fNacimiento, "DD/MM/YYYY")}
+                  value={dayjs(formData.fNacimiento)}
                   onChange={handleDateChange("fNacimiento")}
                 />
                 {errors.fNacimiento && (
@@ -217,7 +255,7 @@ const ClientMaintenance: React.FC = () => {
                 <DatePicker
                   name="fAfiliacion"
                   label="Fecha de afiliación *"
-                  value={dayjs(formData.fAfiliacion, "DD/MM/YYYY")}
+                  value={dayjs(formData.fAfiliacion)}
                   onChange={handleDateChange("fAfiliacion")}
                 />
                 {errors.fAfiliacion && (
@@ -230,7 +268,7 @@ const ClientMaintenance: React.FC = () => {
                 fullWidth
                 label="Teléfono Celular"
                 name="celular"
-                value={formData.celular}
+                value={isEditMode ? formData.telefonoCelular : formData.celular}
                 onChange={handleChange}
                 variant="outlined"
                 error={errors.celular}
@@ -251,14 +289,14 @@ const ClientMaintenance: React.FC = () => {
               <FormControl fullWidth required error={errors.interesFK}>
                 <InputLabel>Interes</InputLabel>
                 <Select
-                  value={formData.interesFK}
+                  value={isEditMode ? formData.interesesId : formData.interesFK}
                   name="interesFK"
                   label="Interes *"
                   onChange={handleSelectChange}
                 >
                   {interesses.map((interest) => (
                     <MenuItem key={interest.id} value={interest.id}>
-                      {interest.description}
+                      {interest.descripcion}
                     </MenuItem>
                   ))}
                 </Select>
@@ -285,7 +323,11 @@ const ClientMaintenance: React.FC = () => {
                 fullWidth
                 label="Reseña"
                 name="resennaPersonal"
-                value={formData.resennaPersonal}
+                value={
+                  isEditMode
+                    ? formData.resenaPersonal
+                    : formData.resennaPersonal
+                }
                 onChange={handleChange}
                 variant="outlined"
                 multiline
