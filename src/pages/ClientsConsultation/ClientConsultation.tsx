@@ -15,8 +15,9 @@ import { ClientListDataType } from "../../types";
 import ClientFilterForm from "../../components/ClientFilterForm/ClientFilterForm";
 import { useAuthContext } from "../../context/AuthContext";
 import { useSiteNotificationContext } from "../../context/SiteNotificationContext";
-import { getClients } from "../../services/clientService";
+import { deleteClient, getClients } from "../../services/clientService";
 import { useNavigate } from "react-router-dom";
+import { showConfirmationDialog } from "../../components/ConfirmationDialog";
 
 const ClientsConsultation: React.FC = () => {
   const [clients, setClients] = useState<ClientListDataType[]>([]);
@@ -34,6 +35,30 @@ const ClientsConsultation: React.FC = () => {
     } catch (err) {
       console.error("There was an error while fetching clients:", err);
       showNotification("Ocurrió un error obteniendo los clientes.", "error");
+    }
+  };
+
+  const handleEditClick = (id: string) => {
+    navigate(`/client-maintenance/${id}`);
+  };
+
+  const handleDeleteClick = async (client: ClientListDataType) => {
+    const confirmed = await showConfirmationDialog(
+      "Eliminar cliente",
+      `¿Está seguro de que desea continuar? Se eliminará permanentemente el cliente ${client.nombre} ${client.apellidos}`
+    );
+    if (confirmed) {
+      await deleteClient(client.id)
+        .then(() => {
+          showNotification("Usuario eliminado exitosamente!", "success");
+        })
+        .catch((err) => {
+          console.error("There was an error trying to delete client.", err);
+          showNotification(
+            "No se logró eliminar al cliente, intentélo más tarde",
+            "error"
+          );
+        });
     }
   };
 
@@ -112,13 +137,20 @@ const ClientsConsultation: React.FC = () => {
                   {`${client.nombre} ${client.apellidos}`}
                 </TableCell>
                 <TableCell
+                  key={client.id}
                   align="right"
                   className="border-b w-1/12 border-gray-200"
                 >
-                  <IconButton size="small">
+                  <IconButton
+                    onClick={() => handleEditClick(client.id)}
+                    size="small"
+                  >
                     <Edit fontSize="small" className="text-gray-400" />
                   </IconButton>
-                  <IconButton size="small">
+                  <IconButton
+                    onClick={() => handleDeleteClick(client)}
+                    size="small"
+                  >
                     <Delete fontSize="small" className="text-gray-400" />
                   </IconButton>
                 </TableCell>

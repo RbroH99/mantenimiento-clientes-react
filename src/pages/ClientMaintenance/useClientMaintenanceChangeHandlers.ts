@@ -1,7 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { ClientCreateDataType } from "../../types";
 import { SelectChangeEvent } from "@mui/material";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 
 export interface MaintenanceChangeHandlersProps {
   formData: ClientCreateDataType;
@@ -14,30 +14,38 @@ const useClientMaintenanceChangeHandlers = ({
 }: MaintenanceChangeHandlersProps) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  const handleResetForm = () => {
-    setFormData({
-      identificacion: "",
-      nombre: "",
-      apellidos: "",
-      sexo: "F",
-      fNacimiento: dayjs().format("DD/MM/YYYY"),
-      fAfiliacion: dayjs().format("DD/MM/YYYY"),
-      celular: "",
-      otroTelefono: "",
-      interesFK: "",
-      direccion: "",
-      resennaPersonal: "",
-      imagen: "",
-      usuarioId: "",
-    });
-  };
-
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    switch (name) {
+      case "celular":
+        setFormData((prev) => ({
+          ...prev,
+          celular: value,
+          telefonoCelular: value,
+        }));
+        break;
+      case "resennaPersonal":
+        setFormData((prev) => ({
+          ...prev,
+          resennaPersonal: value,
+          resenaPersonal: value,
+        }));
+        break;
+      case "interesFk":
+        setFormData((prev) => ({
+          ...prev,
+          interesFK: value,
+          interesesId: value,
+        }));
+        break;
+
+      default:
+        setFormData((prev) => ({
+          ...prev,
+          [name]: value,
+        }));
+        break;
+    }
   };
 
   const handleSelectChange = (event: SelectChangeEvent) => {
@@ -71,9 +79,14 @@ const useClientMaintenanceChangeHandlers = ({
     }
   };
 
+  useEffect(() => {
+    if (formData.imagen) {
+      setImagePreview(formData.imagen);
+    }
+  }, [formData.imagen]);
+
   return {
     imagePreview,
-    handleResetForm,
     handleChange,
     handleDateChange,
     handleImageChange,
