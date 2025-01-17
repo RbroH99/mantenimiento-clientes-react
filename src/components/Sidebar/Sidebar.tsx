@@ -1,11 +1,12 @@
+import { AccountCircle } from "@mui/icons-material";
 import {
   Drawer,
   List,
   ListItemText,
-  Avatar,
   Typography,
   Box,
   ListItemButton,
+  Divider,
 } from "@mui/material";
 import React from "react";
 import { useNavigate } from "react-router-dom";
@@ -30,15 +31,16 @@ const Sidebar: React.FC<SidebarProps> = ({
 
   const content = (
     <div className="h-full flex flex-col">
-      <div className="p-4 flex flex-col items-center space-y-2 border-b">
-        <Avatar className="w-24 h-24">{username.charAt(0)}</Avatar>
+      <div className="p-4 flex flex-col items-center space-y-2">
+        <AccountCircle className="!w-24 !h-24" />
         <Typography variant="subtitle1">{username}</Typography>
       </div>
-
+      <Divider />
+      <Typography variant="h6" className="mb-2 flex flex-col items-center py-4">
+        MENÚ
+      </Typography>
+      <Divider />
       <Box className="p-4">
-        <Typography variant="h6" className="mb-2">
-          MENÚ
-        </Typography>
         <List>
           {menuItems.map((item) => (
             <ListItemButton
@@ -68,7 +70,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         variant="permanent"
         className="hidden lg:block"
         PaperProps={{
-          className: "w-64 mt-16",
+          className: "w-80 mt-16",
         }}
       >
         {content}
@@ -79,7 +81,7 @@ const Sidebar: React.FC<SidebarProps> = ({
         open={open}
         onClose={onClose}
         PaperProps={{
-          className: "w-64 mt-16",
+          className: "w-80 mt-16",
         }}
       >
         {content}

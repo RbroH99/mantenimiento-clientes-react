@@ -5,12 +5,22 @@ const theme = createTheme({
     primary: {
       main: "#001f3f",
     },
+    secondary: {
+      main: "#FFFFFF",
+    },
   },
   components: {
     MuiDrawer: {
       styleOverrides: {
         paper: {
           borderRight: "1px solid #e5e7eb",
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "#001f3f",
         },
       },
     },

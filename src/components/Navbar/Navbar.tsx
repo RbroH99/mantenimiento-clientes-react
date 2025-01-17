@@ -16,23 +16,22 @@ export default function Navbar({ onMenuClick, username }: NavbarProps) {
   }, []);
 
   return (
-    <AppBar position="fixed" className="bg-[#001f3f] z-[1200]">
-      <Toolbar>
-        <IconButton
-          color="primary"
-          edge="start"
-          onClick={onMenuClick}
-          className="lg:hidden"
-        >
-          <MenuIcon />
+    <AppBar position="fixed" className="bg-[#071727] z-[1200]">
+      <Toolbar className="bg-[#071727] border-b-4 border-b-sky-500">
+        <IconButton edge="start" onClick={onMenuClick} className=" !text-white">
+          <MenuIcon className="" />
         </IconButton>
         <Typography variant="h6" component="div" className="flex-grow">
           COMPANIA PRUEBA
         </Typography>
-        <Typography variant="body1" className="mr-4">
+        <Typography variant="body1" className="!mr-4">
           {username}
         </Typography>
-        <IconButton onClick={handleLogout}>
+        <IconButton
+          size="small"
+          onClick={handleLogout}
+          className="!bg-white !text-[#001f3f] "
+        >
           <LogoutOutlined />
         </IconButton>
       </Toolbar>

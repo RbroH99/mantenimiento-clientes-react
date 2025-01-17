@@ -6,10 +6,7 @@ import UserRegisterForm from "../../components/UserRegisterForm/UserRegisterForm
 const Register: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <Box
-        component="div"
-        className="max-w-md w-full space-y-6 p-8 bg-white rounded-lg shadow-md"
-      >
+      <Box component="div" className="max-w-md w-full space-y-6 p-8">
         <Typography
           variant="h5"
           component="h1"
