@@ -3,7 +3,7 @@ import { WarningRounded } from "@mui/icons-material";
 
 const NotFound = () => {
   return (
-    <div className="min-h-screen flex mt-56 justify-center bg-gray-50">
+    <div className="min-h-screen flex mt-48 justify-center bg-gray-50">
       <Box className="text-center space-y-4">
         <div className="flex items-center justify-center gap-2">
           <WarningRounded
@@ -21,7 +21,7 @@ const NotFound = () => {
         <Typography
           variant="h4"
           component="h1"
-          className="text-gray-600 !font-bold"
+          className="text-gray-500 !font-bold"
         >
           Oops... Page Not Found!
         </Typography>
