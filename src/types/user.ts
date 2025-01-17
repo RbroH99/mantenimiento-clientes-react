@@ -10,7 +10,7 @@ export interface UserRegisterDataType extends UserAuthDataType {
 export interface UserInfoType {
   token: string;
   expiration: string;
-  userId: string;
+  userid: string;
   username: string;
 }
 

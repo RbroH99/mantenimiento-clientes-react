@@ -26,7 +26,7 @@ const ClientsConsultation: React.FC = () => {
     try {
       let newClients: ClientListDataType[] = [];
       if (user)
-        newClients = await getClients(user.userId, name, identification);
+        newClients = await getClients(user.userid, name, identification);
       if (!!newClients) setClients(newClients);
     } catch (err) {
       console.error("There was an error while fetching clients:", err);
@@ -39,13 +39,13 @@ const ClientsConsultation: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchClients();
+    // fetchClients();
   }, []);
 
   return (
     <Box className="p-6 max-w-[1200px] bg-white shadow-md !border-1 !border-gray-500 rounded-md min-h-[screen-10] mx-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-[24px] text-[#2C3E50] font-normal">
+        <h1 className="text-[24px] text-[#2C3E50] font-bold">
           Consulta de clientes
         </h1>
         <div className="flex gap-3">
@@ -62,24 +62,24 @@ const ClientsConsultation: React.FC = () => {
 
       <ClientFilterForm onSearch={handleSearch} />
 
-      <TableContainer component={Paper} className="shadow-none border rounded">
+      <TableContainer component={Paper} className="shadow-none !rounded-none">
         <Table>
           <TableHead>
             <TableRow>
               <TableCell
-                className="bg-[#2196f3] text-white font-normal"
+                className="bg-blue-500 w-3/12 !text-white !text-lg font-normal"
                 style={{ borderBottom: "none" }}
               >
                 Identificación
               </TableCell>
               <TableCell
-                className="bg-[#2196f3] text-white font-normal"
+                className="bg-blue-500 !text-white !text-lg !border-l-2 font-normal"
                 style={{ borderBottom: "none" }}
               >
                 Nombre completo
               </TableCell>
               <TableCell
-                className="bg-[#2196f3] text-white font-normal"
+                className="bg-blue-500 w-1/12 !text-white !text-lg !border-l-2 font-normal"
                 align="right"
                 style={{ borderBottom: "none" }}
               >

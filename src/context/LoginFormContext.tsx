@@ -35,7 +35,7 @@ export const LoginFormProvider = ({ children }: { children: ReactNode }) => {
   const [formData, setFormData] = useState<UserAuthFormData>({
     username: "",
     password: "",
-    remember: false,
+    remember: true,
   });
   const { error, loading, login, token, user } = useAuthContext();
   const navigate = useNavigate();
