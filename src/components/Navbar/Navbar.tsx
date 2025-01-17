@@ -11,7 +11,6 @@ interface NavbarProps {
 export default function Navbar({ onMenuClick, username }: NavbarProps) {
   const { logout } = useAuthContext();
   const handleLogout = useCallback(() => {
-    console.log("Logout clicked");
     logout();
   }, []);
 

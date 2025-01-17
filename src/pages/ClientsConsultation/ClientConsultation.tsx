@@ -42,7 +42,7 @@ const ClientsConsultation: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchClients();
+    fetchClients("", "");
   }, []);
 
   return (
@@ -105,13 +105,16 @@ const ClientsConsultation: React.FC = () => {
           <TableBody>
             {clients.map((client) => (
               <TableRow key={client.id} className="hover:bg-gray-50">
-                <TableCell className="text-gray-600 border-b border-gray-200">
-                  {client.id}
+                <TableCell className="text-gray-600 border-b  w-3/12 border-gray-200">
+                  {client.identificacion}
                 </TableCell>
                 <TableCell className="text-gray-600 border-b border-gray-200">
                   {`${client.nombre} ${client.apellidos}`}
                 </TableCell>
-                <TableCell align="right" className="border-b border-gray-200">
+                <TableCell
+                  align="right"
+                  className="border-b w-1/12 border-gray-200"
+                >
                   <IconButton size="small">
                     <Edit fontSize="small" className="text-gray-400" />
                   </IconButton>

@@ -1,4 +1,4 @@
-import { IconButton, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import { Search } from "@mui/icons-material";
 import React, { useState } from "react";
 
@@ -33,12 +33,12 @@ const ClientFilterForm: React.FC<ClientFilterForm> = ({ onSearch }) => {
           onChange={(e) => setSearchIdentification(e.target.value)}
           className="bg-white"
         />
-        <IconButton
-          className="!bg-gray-200 border-2 w-14 h-14"
+        <div
+          className="!bg-gray-200 border-2 rounded-full flex justify-center items-center border-gray-500 hover:!bg-gray-300 !min-w-14 !h-14"
           onClick={handleSearchClick}
         >
           <Search className="text-gray-500 !w-8 !h-8" />
-        </IconButton>
+        </div>
       </div>
     </div>
   );
