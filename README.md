@@ -17,7 +17,7 @@ Aplicación de gestión de clientes; una SPA implementada usando React, Typescri
 1. Clona el repositorio:
 
    ```sh
-   git clone https://github.com/tu-usuario/mantenimiento-clientes-react.git
+   git clone https://github.com/RbroH99/mantenimiento-clientes-react.git
    ```
 
 2. Navega al directorio del proyecto:
